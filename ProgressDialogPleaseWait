@@ -1,0 +1,67 @@
+import 'package:flutter/material.dart';
+
+class PleaseWaitWidget extends StatelessWidget {
+  final Widget child;
+  final Widget? progressWidget;
+  final bool? isProgressRunning;
+  String? progressText;
+  final double progressWidgetOpacity;
+
+  PleaseWaitWidget({
+    Key? key,
+    required this.child,
+    required this.isProgressRunning,
+    this.progressText = "Please Wait",
+    this.progressWidgetOpacity = 0.7,
+    this.progressWidget,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        child,
+        Visibility(
+          visible: isProgressRunning == true,
+          child: Container(
+            color: Colors.grey.withOpacity(progressWidgetOpacity),
+            child: progressWidget ?? ProgressWidget(progressText),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class ProgressWidget extends StatelessWidget {
+  final String? progressText;
+
+  ProgressWidget(this.progressText);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Card(
+        elevation: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const CircularProgressIndicator(
+                color: Colors.amber,  // can also pass your theme color here
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              Text(
+                progressText!,
+                style: Theme.of(context).textTheme.subtitle1,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
